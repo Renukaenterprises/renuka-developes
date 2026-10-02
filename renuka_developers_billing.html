@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Renuka Developers - Billing & Quotation</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f4f6;color:#111827;font-family:Arial,sans-serif}.wrap{max-width:1150px;margin:auto;padding:14px}.card{background:#fff;border:1px solid #ddd;border-radius:12px;padding:16px;margin-bottom:14px;box-shadow:0 3px 12px #0001}.head{background:#111827;color:white;border-radius:12px;padding:20px}.head h1{margin:0;font-size:30px}.head p{margin:6px 0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:13px;font-weight:bold;margin-bottom:5px;color:#374151}input,select,textarea{width:100%;padding:9px;border:1px solid #cbd5e1;border-radius:7px;font-size:14px}textarea{min-height:65px}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.btn{border:0;border-radius:7px;padding:10px 14px;font-weight:bold;cursor:pointer}.red{background:#b91c1c;color:#fff}.dark{background:#111827;color:#fff}.light{background:#f3f4f6;border:1px solid #ccc}.danger{background:#fee2e2;color:#991b1b}h2{font-size:18px;margin:0 0 12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;min-width:850px}th,td{border:1px solid #d1d5db;padding:7px;font-size:13px}th{background:#f3f4f6;text-align:left}td input,td select{padding:6px}.right{text-align:right}.totals{max-width:390px;margin-left:auto;margin-top:12px}.row{display:flex;justify-content:space-between;padding:6px}.grand{font-size:20px;font-weight:bold;border-top:2px solid #111;padding-top:10px}.empty{text-align:center;padding:20px;border:1px dashed #bbb;color:#777}.small{font-size:12px;color:#6b7280}.sign{display:flex;justify-content:space-between;margin-top:40px;font-weight:bold}
+@media(max-width:750px){.grid{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}@media(max-width:480px){.grid{grid-template-columns:1fr}.toolbar .btn{width:100%}}
+@media print{body{background:white}.no-print{display:none!important}.wrap{padding:0}.card{box-shadow:none;border:0;padding:0;margin-bottom:10px}.head{background:white;color:#000;border-radius:0;border-bottom:2px solid #111;padding:0 0 8px}.head p{color:#000}table{min-width:0}th,td{font-size:10px;padding:5px}input,select,textarea{border:0;padding:0;font-size:10px;background:transparent}@page{size:A4 portrait;margin:10mm}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="head"><h1>RENUKA DEVELOPERS</h1><p>Complete Civil, Renovation & Building Works</p><p><b>Jain Mandir, Katraj, Pune - 411046</b> | Owner: <b>Shreyas Shinde</b> | 9860534013</p></div>
+
+<div class="card">
+<h2>Quotation / Bill Details</h2>
+<div class="grid">
+<div><label>Document Type</label><select id="docType"><option>Quotation</option><option>Bill / Invoice</option><option>Estimate</option></select></div>
+<div><label>Document No.</label><input id="docNo"></div>
+<div><label>Date</label><input id="date" type="date"></div>
+<div><label>Valid Until</label><input id="valid" type="date"></div>
+</div>
+<div class="grid2" style="margin-top:10px">
+<div><label>Customer Name</label><input id="customer" placeholder="Customer name"></div>
+<div><label>Site / Project Address</label><input id="address" placeholder="Site address"></div>
+</div>
+<div style="margin-top:10px"><label>Notes / Terms</label><textarea id="notes" placeholder="Payment terms, material conditions, etc."></textarea></div>
+</div>
+
+<div class="card">
+<div class="toolbar no-print" style="margin-bottom:12px">
+<button class="btn red" onclick="addItem()">+ Add Work Item</button>
+<select id="preset" style="max-width:320px"><option value="">Select civil work to add...</option>
+<option>Old Plaster Removal</option><option>New Cement Plaster</option><option>Tile Removal / Breaking</option><option>New Tile Laying</option><option>Marble Work</option><option>Granite Work</option><option>Wall / Floor Breaking</option><option>Debris Removal & Disposal</option><option>Putty Application</option><option>Wall Primer</option><option>Interior Painting</option><option>Exterior Painting</option><option>Waterproofing</option><option>Brick Masonry</option><option>Block Masonry</option><option>PCC Work</option><option>RCC / Concrete Work</option><option>Floor Screed</option><option>Plumbing Work</option><option>Plumbing Material Supply</option><option>Electrical Work</option><option>Electrical Material Supply</option><option>False Ceiling</option><option>Fabrication / Welding</option><option>Door / Window Work</option><option>Kitchen / Civil Modification</option><option>Demolition Work</option><option>General Labour</option><option>Custom Civil Work</option></select>
+<button class="btn dark" onclick="addSelected()">Add Selected</button>
+</div>
+<h2>Work Items</h2>
+<div id="empty" class="empty">No work items. Add a civil work item above.</div>
+<div class="table"><table id="tbl" style="display:none"><thead><tr><th>Work / Item</th><th>Description</th><th>Size / Measurement</th><th>Unit</th><th>Qty / Area</th><th>Rate</th><th>Amount</th><th class="no-print">Remove</th></tr></thead><tbody id="items"></tbody></table></div>
+<div class="totals">
+<div class="row"><span>Subtotal</span><b id="sub">₹0.00</b></div>
+<div class="row"><span>Discount</span><input id="disc" type="number" value="0" style="width:120px;text-align:right" oninput="calc()"></div>
+<div class="row"><span>GST %</span><input id="gst" type="number" value="0" style="width:120px;text-align:right" oninput="calc()"></div>
+<div class="row"><span>GST Amount</span><b id="gstamt">₹0.00</b></div>
+<div class="row grand"><span>Grand Total</span><span id="total">₹0.00</span></div>
+<div class="small">Amount in words</div><b id="words">Rupees Zero Only</b>
+</div>
+</div>
+
+<div class="card no-print"><div class="toolbar">
+<button class="btn red" onclick="window.print()">Print / Save PDF</button>
+<button class="btn dark" onclick="saveBill()">Save in Browser</button>
+<button class="btn light" onclick="loadBill()">Load Saved Bill</button>
+<button class="btn danger" onclick="location.reload()">Clear</button>
+</div></div>
+
+<div class="card"><h2>Terms & Conditions</h2>
+<ol class="small"><li>Work is measured at site and billed according to actual completed quantity unless agreed otherwise.</li><li>Materials, labour and disposal are included only where specified.</li><li>Extra work or changes are charged separately.</li><li>Payment is due as per agreed terms.</li></ol>
+<div class="sign"><span>Customer Signature</span><span>For RENUKA DEVELOPERS</span></div></div>
+</div>
+
+<script>
+const units={"Old Plaster Removal":"sq.ft","New Cement Plaster":"sq.ft","Tile Removal / Breaking":"sq.ft","New Tile Laying":"sq.ft","Marble Work":"sq.ft","Granite Work":"sq.ft","Wall / Floor Breaking":"sq.ft","Debris Removal & Disposal":"job","Putty Application":"sq.ft","Wall Primer":"sq.ft","Interior Painting":"sq.ft","Exterior Painting":"sq.ft","Waterproofing":"sq.ft","Brick Masonry":"sq.ft","Block Masonry":"sq.ft","PCC Work":"cu.ft","RCC / Concrete Work":"cu.ft","Floor Screed":"sq.ft","Plumbing Work":"job","Plumbing Material Supply":"job","Electrical Work":"point","Electrical Material Supply":"job","False Ceiling":"sq.ft","Fabrication / Welding":"kg","Door / Window Work":"nos","Kitchen / Civil Modification":"job","Demolition Work":"job","General Labour":"day","Custom Civil Work":"job"};
+const U=["sq.ft","sq.m","r.ft","cu.ft","nos","day","job","point","bag","litre","kg","set"];
+const $=id=>document.getElementById(id);
+function money(x){return "₹"+(+x||0).toLocaleString("en-IN",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function addItem(name="",unit="sq.ft",data={}){ $("empty").style.display="none";$("tbl").style.display="table";let tr=document.createElement("tr");tr.innerHTML=`<td><input class="w" value="${name}"></td><td><input class="d" value="${data.desc||""}" placeholder="Material / labour details"></td><td><input class="s" value="${data.size||""}" placeholder="7 × 10 ft"></td><td><select class="u">${U.map(x=>`<option ${x==(data.unit||unit)?"selected":""}>${x}</option>`).join("")}</select></td><td><input class="q" type="number" min="0" step=".01" value="${data.qty||1}"></td><td><input class="r" type="number" min="0" step=".01" value="${data.rate||0}"></td><td class="a right">₹0.00</td><td class="no-print"><button class="btn danger" onclick="this.closest('tr').remove();calc();emptyCheck()">×</button></td>`;$("items").appendChild(tr);tr.querySelectorAll("input,select").forEach(e=>e.addEventListener("input",calc));calc()}
+function addSelected(){let n=$("preset").value;if(n){addItem(n,units[n]||"job");$("preset").value=""}else addItem()}
+function emptyCheck(){let n=document.querySelectorAll("#items tr").length;$("empty").style.display=n?"none":"block";$("tbl").style.display=n?"table":"none"}
+function calc(){let s=0;document.querySelectorAll("#items tr").forEach(t=>{let a=(+t.querySelector(".q").value||0)*(+t.querySelector(".r").value||0);s+=a;t.querySelector(".a").textContent=money(a)});let d=+$("disc").value||0,b=Math.max(0,s-d),g=+$("gst").value||0,ga=b*g/100,t=b+ga;$("sub").textContent=money(s);$("gstamt").textContent=money(ga);$("total").textContent=money(t);$("words").textContent=words(Math.round(t))}
+function words(n){if(!n)return"Rupees Zero Only";let o=["","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten","Eleven","Twelve","Thirteen","Fourteen","Fifteen","Sixteen","Seventeen","Eighteen","Nineteen"],t=["","","Twenty","Thirty","Forty","Fifty","Sixty","Seventy","Eighty","Ninety"];function x(a){return a<20?o[a]:t[Math.floor(a/10)]+(a%10?" "+o[a%10]:"")}function h(a){return a>=100?o[Math.floor(a/100)]+" Hundred"+(a%100?" "+x(a%100):""):x(a)}let z="";let cr=Math.floor(n/1e7);n%=1e7;let l=Math.floor(n/1e5);n%=1e5;let th=Math.floor(n/1e3);n%=1e3;if(cr)z+=h(cr)+" Crore ";if(l)z+=h(l)+" Lakh ";if(th)z+=h(th)+" Thousand ";if(n)z+=h(n);return"Rupees "+z.trim()+" Only"}
+function collect(){return{docType:$("docType").value,docNo:$("docNo").value,date:$("date").value,valid:$("valid").value,customer:$("customer").value,address:$("address").value,notes:$("notes").value,disc:$("disc").value,gst:$("gst").value,items:[...document.querySelectorAll("#items tr")].map(t=>({name:t.querySelector(".w").value,desc:t.querySelector(".d").value,size:t.querySelector(".s").value,unit:t.querySelector(".u").value,qty:t.querySelector(".q").value,rate:t.querySelector(".r").value}))}}
+function saveBill(){localStorage.setItem("renukaDevelopersBill",JSON.stringify(collect()));alert("Bill saved in this browser.")}
+function loadBill(){let d=JSON.parse(localStorage.getItem("renukaDevelopersBill")||"null");if(!d)return alert("No saved bill found.");["docType","docNo","date","valid","customer","address","notes","disc","gst"].forEach(k=>{if(d[k]!=null)$(k).value=d[k]});$("items").innerHTML="";(d.items||[]).forEach(i=>addItem(i.name,i.unit,i));emptyCheck();calc()}
+$("date").value=new Date().toISOString().slice(0,10);$("docNo").value="RD-"+new Date().getFullYear()+"-"+String(Date.now()).slice(-6);addItem();
+</script>
+</body></html>
